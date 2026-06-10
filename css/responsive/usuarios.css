@@ -1,0 +1,90 @@
+/**
+ * USUARIOS — gestion_usuarios.php
+ * Móvil/tablet: max-width 768px
+ */
+ 
+.page-gestion-usuarios .gestion-form {
+    display: flex;
+    flex-direction: column;
+}
+
+@media (max-width: 768px) {
+    /* ==========================================================================
+       Formulario (Reordenación correcta: nombre → usuario → correo → pass → rol)
+       ========================================================================== */
+    .page-gestion-usuarios .gestion-form .form-group {
+        width: 100%;
+    }
+
+    #form-usuario .form-group:nth-child(1) { order: 5; } /* Nombre completo */
+    #form-usuario .form-group:nth-child(2) { order: 2; } /* Nombre de usuario */
+    #form-usuario .form-group:nth-child(3) { order: 4; } /* Correo electrónico */
+    #form-usuario .form-group:nth-child(4) { order: 3; } /* Contraseña */
+    #form-usuario .form-group:nth-child(5) { order: 1; } /* Rol */
+
+    .page-gestion-usuarios .form-actions {
+        order: 6;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        margin-top: 8px;
+    }
+
+    .page-gestion-usuarios .form-actions .btn {
+        width: 100%;
+    }
+
+    /* ==========================================================================
+       Tabla responsive adaptada a Tarjetas (Cards)
+       ========================================================================== */
+    .page-gestion-usuarios table thead {
+        display: none;
+    }
+
+    .page-gestion-usuarios table tbody tr {
+        display: block;
+        margin-bottom: 14px;
+        border: 1px solid var(--borde, #e2e8f0);
+        border-radius: 12px;
+        padding: 10px 12px;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .page-gestion-usuarios table tbody td {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 8px 0;
+        border: none;
+        text-align: right;
+    }
+
+    /* Inyección de etiquetas mediante data-label="Título" en el HTML */
+    .page-gestion-usuarios table tbody td::before {
+        content: attr(data-label);
+        font-weight: 700;
+        color: #64748b;
+        text-align: left;
+        flex-shrink: 0;
+    }
+
+    /* Celda de acciones (Editar, Eliminar, etc.) */
+    .page-gestion-usuarios table tbody td:last-child {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .page-gestion-usuarios table .actions {
+        display: flex; /* Asegura el comportamiento flex si no venía de los estilos globales */
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+
+    .page-gestion-usuarios table .inline-form {
+        display: inline-block;
+    }
+}

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval';
+    style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; 
+    script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com;
+    font-src 'self' data: https://cdnjs.cloudflare.com https://fonts.gstatic.com;
+    connect-src 'self' https://*.trycloudflare.com;
+    ">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Reportes — Demo Cordova</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="css/dashboard-premium.css">
+    <link rel="stylesheet" href="css/app-shell.css">
+    <link rel="stylesheet" href="css/app-pages.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/responsive/reportes.css">
+    <link rel="stylesheet" href="css/demo-shell.css">
+</head>
+
+<body class="app-shell demo-cordova">
+
+    <p class="demo-banner">Demostración — cifras de ejemplo</p>
+
+    <div class="layout">
+        <main class="main-content">
+            
+            <header class="topbar">
+                <div class="topbar-left">
+                    <h2>Reportes</h2>
+                </div>
+                <div class="topbar-right">
+                    <div class="user-box">
+                        <div class="avatar"><i class="fa-solid fa-user" aria-hidden="true"></i></div>
+                        <div>
+                            <strong>admin.demo</strong>
+                            <small>admin</small>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="page-content">
+                <div class="rep-container page-reporte page-reportes-unificado">
+
+                    <nav class="rep-tipo-nav no-print" aria-label="Tipo de reporte" id="nav-tipo-reporte">
+                        <a href="#" class="rep-tipo-btn is-active" data-tipo="mensual">
+                            <i class="fa-solid fa-calendar-days" aria-hidden="true"></i> Mensual
+                        </a>
+                        <a href="#" class="rep-tipo-btn" data-tipo="anual">
+                            <i class="fa-solid fa-file-circle-exclamation" aria-hidden="true"></i> Anual
+                        </a>
+                    </nav>
+
+                    <div id="loading-spinner" style="display: none; text-align: center; padding: 20px;">
+                        <i class="fa-solid fa-spinner fa-spin fa-2x"></i>
+                        <p>Cargando datos...</p>
+                    </div>
+
+                    <div id="panel-reporte-mensual" class="reportes-panel">
+                        <div class="rep-header no-print" id="header-reporte-mensual">
+                            <div class="rep-header-text">
+                                <span class="eyebrow">Reporte mensual</span>
+                                <h1>Mayo 2026</h1>
+                                <p class="rep-subtitle">Resumen de escrituras y avance por etapa.</p>
+                            </div>
+                            <button type="button" class="btn btn-secondary btn-imprimir" onclick="window.print()">
+                                <i class="fa-solid fa-print" aria-hidden="true"></i> Imprimir / PDF
+                            </button>
+                        </div>
+                        
+                        <form method="get" class="rep-filtro no-print" action="#">
+                            <input type="hidden" name="tipo" value="mensual">
+                            <div class="rep-filtro-field">
+                                <label for="mes">Mes</label>
+                                <select id="mes" name="mes">
+                                    <option value="1" selected>Enero</option>
+                                    <option value="2">Febrero</option>
+                                    <option value="3">Marzo</option>
+                                    <option value="4">Abril</option>
+                                    <option value="5">Mayo</option>
+                                    <option value="6">Junio</option>
+                                    <option value="7">Julio</option>
+                                    <option value="8">Agosto</option>
+                                    <option value="9">Septiembre</option>
+                                    <option value="10">Octubre</option>
+                                    <option value="11">Noviembre</option>
+                                    <option value="12">Diciembre</option>
+                                </select>
+                            </div>
+                            <div class="rep-filtro-field">
+                                <label for="anio-mensual">Año</label>
+                                <input type="number" id="anio-mensual" class="input-anio" name="anio" value="2026" min="2020" max="2027">
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-buscar">
+                                <span class="btn-texto">Ver reporte</span>
+                            </button>
+                        </form>
+
+                        <div class="rep-cards bloque-tarjetas">
+                            <div class="rep-card c-firma"><div class="num" id="resumen-firmadas">0</div><div class="lbl">Escrituras Firmadas</div></div>
+                            <div class="rep-card c-manter"><div class="num" id="resumen-manter">0</div><div class="lbl">Ingresaron a Manter</div></div>
+                            <div class="rep-card c-infonavit"><div class="num" id="resumen-infonavit">0</div><div class="lbl">Ingresaron a Infonavit</div></div>
+                            <div class="rep-card c-catastro"><div class="num" id="resumen-catastro">0</div><div class="lbl">Ingresaron a Catastro</div></div>
+                            <div class="rep-card c-rpp"><div class="num" id="resumen-rpp">0</div><div class="lbl">Completadas (RPP)</div></div>
+                        </div>
+
+                        <div class="rep-tabla-wrap rep-tabla-scroll bloque-tabla">
+                            <h2>Detalle de escrituras</h2>
+                            <table class="rep-tabla">
+                                <thead>
+                                    <tr>
+                                        <th>Folio</th>
+                                        <th>No. Crédito</th>
+                                        <th>Fecha Firma</th>
+                                        <th>Manter</th>
+                                        <th>Infonavit</th>
+                                        <th>Catastro</th>
+                                        <th>RPP</th>
+                                        <th>Estatus</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="reporte-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div id="panel-reporte-anual" class="reportes-panel" hidden>
+                        <div class="rep-header no-print">
+                            <div class="rep-header-text">
+                                <span class="eyebrow">Detenidas · anual</span>
+                                <h1>Resumen 2026</h1>
+                                <p class="rep-subtitle">Escrituras firmadas sin ingreso a RPP.</p>
+                            </div>
+                            <div class="rep-header-actions">
+                                <a href="#" class="btn btn-secondary"><i class="fa-solid fa-file-csv" aria-hidden="true"></i> Exportar CSV</a>
+                                <button type="button" class="btn btn-secondary btn-imprimir" onclick="window.print()">Imprimir</button>
+                            </div>
+                        </div>
+
+                        <form method="get" class="rep-filtro no-print" action="#">
+                            <input type="hidden" name="tipo" value="anual">
+                            <div class="rep-filtro-field">
+                                <label for="anio-anual">Año</label>
+                                <input type="number" id="anio-anual" class="input-anio" name="anio" value="2026">
+                            </div>
+                            <div class="rep-filtro-field">
+                                <label for="notaria">Notaría</label>
+                                <select id="notaria" name="notaria">
+                                    <option value="">Todas (6 y 26)</option>
+                                    <option value="6">Notaría 6</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-buscar">
+                                <span class="btn-texto">Generar resumen</span>
+                            </button>
+                        </form>
+
+                        <div class="rep-cards bloque-tarjetas">
+                            <div class="rep-card c-firma"><div class="num" id="anual-firmadas">0</div><div class="lbl">Firmadas in 2026</div></div>
+                            <div class="rep-card c-rpp"><div class="num" id="anual-rpp">0</div><div class="lbl">Completadas (RPP)</div></div>
+                            <div class="rep-card c-vencido"><div class="num" id="anual-detenidas">0</div><div class="lbl">Detenidas (sin RPP)</div></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <nav class="demo-bottom-nav" aria-label="Módulos">
+        <a href="index.html"><i class="fa-solid fa-house" aria-hidden="true"></i>Inicio</a>
+        <a href="usuarios.html"><i class="fa-solid fa-users" aria-hidden="true"></i>Usuarios</a>
+        <a href="actividades.html"><i class="fa-solid fa-list" aria-hidden="true"></i>Actividad</a>
+        <a href="papelera.html"><i class="fa-solid fa-trash" aria-hidden="true"></i>Papelera</a>
+        <a href="reportes.html" class="is-active"><i class="fa-solid fa-chart-bar" aria-hidden="true"></i>Reportes</a>
+    </nav>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="cordova.js"></script> 
+    <script>
+        const API_BASE = TUNEL_URL + '/proyectos/api';
+
+        $(document).ready(function() {
+            $('.rep-tipo-btn').on('click', function(e) {
+                e.preventDefault();
+                $('.rep-tipo-btn').removeClass('is-active');
+                $(this).addClass('is-active');
+                
+                const tipo = $(this).data('tipo');
+                $('.reportes-panel').attr('hidden', true);
+                $(`#panel-reporte-${tipo}`).removeAttr('hidden');
+                
+                obtenerReporte(); // Actualiza los datos al cambiar de pestaña
+            });
+
+            $(document).on('submit', '.rep-filtro', function(e) {
+                e.preventDefault();
+                obtenerReporte();
+            });
+
+            if (window.cordova) {
+                document.addEventListener('deviceready', onDeviceReady, false);
+            } else {
+                obtenerReporte();
+            }
+        });
+
+        function onDeviceReady() {
+            document.addEventListener('offline', () => { alert('Sin conexión a internet'); }, false);
+            obtenerReporte();
+        }
+
+        function formatearFecha(fecha) {
+            if (!fecha) return '<span class="cr">—</span>';
+            let fechaObj = new Date(fecha + 'T00:00:00');
+            return `<span><span class="ck">✔</span> ${fechaObj.toLocaleDateString('es-MX')}</span>`;
+        }
+
+        function obtenerReporte() {
+            if (!navigator.onLine) {
+                alert('No hay conexión a internet');
+                return;
+            }
+
+            const $panelActivo = $('.reportes-panel:not([hidden])');
+            // CORRECCIÓN 1: Capturar el tipo dinámico del formulario activo (mensual o anual)
+            const tipo = $panelActivo.find('input[name="tipo"]').val();
+            const mes = $panelActivo.find('#mes').val() || ''; 
+            const anio = $panelActivo.find('.input-anio').val();
+
+            if (!anio) {
+                alert('Por favor, introduce un año válido.');
+                return;
+            }
+
+            $panelActivo.find('.btn-buscar').prop('disabled', true).find('.btn-texto').text('Buscando...');
+            $('#loading-spinner').show();
+            $panelActivo.find('.bloque-tarjetas, .bloque-tabla').hide();
+
+            // CORRECCIÓN 1 (Continuación): Enviar el parámetro "tipo" a la API de PHP
+            const URL_COMPLETA = `${API_BASE}/obtener_reporte.php?tipo=${tipo}&mes=${mes}&anio=${anio}`;
+
+            $.ajax({
+                url: URL_COMPLETA,
+                type: 'GET',
+                dataType: 'json',
+                success: function(res) {
+                    if (res.success) {
+                        const resumen = res.resumen || {};
+                        
+                        // CORRECCIÓN 2: Repartir datos según el panel activo
+                        if (tipo === 'mensual') {
+                            $('#resumen-firmadas').text(resumen.firmadas);
+                            $('#resumen-manter').text(resumen.manter);
+                            $('#resumen-infonavit').text(resumen.infonavit);
+                            $('#resumen-catastro').text(resumen.catastro);
+                            $('#resumen-rpp').text(resumen.rpp);
+                            
+                            // Renderizar la tabla de detalles (sólo aplica en mensual)
+                            const documentos = res.documentos || [];
+                            const $tbody = $('#reporte-body');
+                            $tbody.empty();
+
+                            if (documentos.length === 0) {
+                                $tbody.append('<tr><td colspan="8" style="text-align:center; color:gray; padding:20px;">No se encontraron trámites registrados.</td></tr>');
+                            } else {
+                                documentos.forEach(function(doc) {
+                                    const estatusTexto = doc.fecha_ingreso_rpp ? 'Finalizado' : 'En trámite';
+                                    const estatusClase = doc.fecha_ingreso_rpp ? 'text-success' : 'text-warning';
+                                    const fechaFirmaLimpia = doc.fecha_firma ? new Date(doc.fecha_firma + 'T00:00:00').toLocaleDateString('es-MX') : '—';
+
+                                    $tbody.append(`
+                                            <tr>
+                                                <td data-label="Folio">${doc.folio}</td>
+                                                <td data-label="No. Crédito">${doc.numero_credito || '—'}</td>
+                                                <td data-label="Fecha Firma">${fechaFirmaLimpia}</td>
+                                                <td data-label="Manter">${formatearFecha(doc.fecha_ingreso_manter)}</td>
+                                                <td data-label="Infonavit">${formatearFecha(doc.fecha_ingreso_infonavit)}</td>
+                                                <td data-label="Catastro">${formatearFecha(doc.fecha_ingreso_catastro_1)}</td>
+                                                <td data-label="RPP">${formatearFecha(doc.fecha_ingreso_rpp)}</td>
+                                                <td data-label="Estatus"><span class="timeline-note ${estatusClase}">${estatusTexto}</span></td>
+                                            </tr>
+                                        `);
+                                });
+                            }
+                        } else if (tipo === 'anual') {
+                            // Asignación de contadores de la vista anual
+                            $('#anual-firmadas').text(resumen.firmadas);
+                            $('#anual-rpp').text(resumen.rpp);
+                            // Las detenidas se calculan dinámicamente: firmadas menos completadas en RPP
+                            const detenidas = resumen.firmadas - resumen.rpp;
+                            $('#anual-detenidas').text(detenidas < 0 ? 0 : detenidas);
+                        }
+                    } else {
+                        alert('Error al procesar el reporte');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error AJAX:", error);
+                    alert('Error al conectar con el servidor');
+                },
+                complete: function() {
+                    $panelActivo.find('.btn-buscar').prop('disabled', false).find('.btn-texto').text(tipo === 'mensual' ? 'Ver reporte' : 'Generar resumen');
+                    $('#loading-spinner').hide();
+                    $panelActivo.find('.bloque-tarjetas, .bloque-tabla').show();
+                }
+            });
+        }
+    </script>
+</body>
+</html>

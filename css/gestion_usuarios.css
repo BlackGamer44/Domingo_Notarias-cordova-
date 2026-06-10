@@ -1,0 +1,326 @@
+:root {
+    --primary: #2E3A6E;
+    --secondary: #C4A64A;
+    --danger: #e74c3c;
+    --warning: #f39c12;
+    --info: #3498db;
+    --light: #F5F5F5;
+    --dark: #34495e;
+    --success: #28a745;
+    --gray: #6c757d;
+}
+
+/* Solo contenido de gestión de usuarios (no menú lateral ni botón toggle) */
+.page-gestion-usuarios .container {
+    max-width: min(1000px, 100%);
+    width: 100%;
+    margin: 20px auto;
+    background: white;
+    padding: clamp(16px, 4vw, 30px);
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.5s ease-out;
+    box-sizing: border-box;
+}
+
+.page-gestion-usuarios h2,
+.page-gestion-usuarios h3 {
+    color: var(--primary);
+    margin-bottom: 20px;
+}
+
+.page-gestion-usuarios h2 {
+    border-bottom: 2px solid var(--secondary);
+    padding-bottom: 10px;
+    font-size: 1.8rem;
+}
+
+.page-gestion-usuarios h3 {
+    font-size: 1.4rem;
+    margin-top: 30px;
+    color: var(--dark);
+}
+
+.page-gestion-usuarios .form-group {
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.page-gestion-usuarios label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--dark);
+    font-size: 0.95rem;
+}
+
+.page-gestion-usuarios input[type="text"],
+.page-gestion-usuarios input[type="password"],
+.page-gestion-usuarios input[type="email"],
+.page-gestion-usuarios select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: all 0.3s;
+    box-sizing: border-box;
+}
+
+.page-gestion-usuarios input[type="text"]:focus,
+.page-gestion-usuarios input[type="password"]:focus,
+.page-gestion-usuarios input[type="email"]:focus,
+.page-gestion-usuarios select:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(158, 44, 24, 0.1);
+}
+
+.page-gestion-usuarios .password-field {
+    position: relative;
+}
+
+.page-gestion-usuarios .password-toggle {
+    position: absolute;
+    right: 15px;
+    top: 40px;
+    cursor: pointer;
+    color: var(--gray);
+    font-size: 1.1rem;
+    transition: all 0.3s;
+}
+
+.page-gestion-usuarios .password-toggle:hover {
+    color: var(--primary);
+}
+
+.page-gestion-usuarios .gestion-form > button[type="submit"],
+.page-gestion-usuarios form.gestion-form button[type="submit"] {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+    transition: all 0.3s;
+    width: 100%;
+}
+
+.page-gestion-usuarios .gestion-form > button[type="submit"]:hover,
+.page-gestion-usuarios form.gestion-form button[type="submit"]:hover {
+    background-color: #a00505;
+    transform: translateY(-2px);
+}
+
+.page-gestion-usuarios table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.page-gestion-usuarios th,
+.page-gestion-usuarios td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.page-gestion-usuarios th {
+    background-color: var(--primary);
+    color: white;
+    position: sticky;
+    top: 0;
+    font-weight: 600;
+}
+
+.page-gestion-usuarios tr:nth-child(even) {
+    background-color: var(--light);
+}
+
+.page-gestion-usuarios tr:hover {
+    background-color: rgba(196, 166, 74, 0.12);
+}
+
+.page-gestion-usuarios td a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.page-gestion-usuarios td a:hover {
+    text-decoration: underline;
+}
+
+.page-gestion-usuarios .error {
+    color: #721c24;
+    background-color: #f8d7da;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 25px;
+    border: 1px solid #f5c6cb;
+    font-size: 0.95rem;
+}
+
+.page-gestion-usuarios .success {
+    color: #155724;
+    background-color: #d4edda;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 25px;
+    border: 1px solid #c3e6cb;
+    font-size: 0.95rem;
+}
+
+.page-gestion-usuarios .actions {
+    display: flex;
+    gap: 10px;
+}
+
+.page-gestion-usuarios .btn-editar {
+    background-color: var(--info);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+    width: auto;
+}
+
+.page-gestion-usuarios .btn-editar:hover {
+    background-color: #0069d9;
+}
+
+.page-gestion-usuarios .btn-eliminar {
+    background-color: var(--danger);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+    width: auto;
+}
+
+.page-gestion-usuarios .btn-eliminar:hover {
+    background-color: #c82333;
+}
+
+.page-gestion-usuarios input:required,
+.page-gestion-usuarios select:required {
+    border-left: 3px solid var(--primary);
+}
+
+.page-gestion-usuarios input:invalid {
+    border-color: var(--danger);
+}
+
+.page-gestion-usuarios input:valid {
+    border-color: #28a745;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+    .page-gestion-usuarios .container {
+        padding: 20px;
+        margin: 10px;
+    }
+
+    .page-gestion-usuarios input,
+    .page-gestion-usuarios select {
+        font-size: 16px;
+        padding: 14px;
+    }
+
+    .page-gestion-usuarios .actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .page-gestion-usuarios .btn-editar,
+    .page-gestion-usuarios .btn-eliminar {
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .page-gestion-usuarios table {
+        border: 0;
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .page-gestion-usuarios thead {
+        display: none;
+    }
+
+    .page-gestion-usuarios tr {
+        display: block;
+        margin-bottom: 15px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        padding: 10px;
+    }
+
+    .page-gestion-usuarios td {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        border: none;
+        border-bottom: 1px solid #eee;
+    }
+
+    .page-gestion-usuarios td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: #555;
+        flex-basis: 45%;
+        padding-right: 10px;
+    }
+
+    .page-gestion-usuarios td:last-child {
+        border-bottom: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-gestion-usuarios h2 {
+        font-size: 1.5rem;
+    }
+
+    .page-gestion-usuarios h3 {
+        font-size: 1.2rem;
+    }
+
+    .page-gestion-usuarios .btn-editar,
+    .page-gestion-usuarios .btn-eliminar {
+        padding: 10px;
+        font-size: 12px;
+    }
+
+    .page-gestion-usuarios .form-group {
+        margin-bottom: 20px;
+    }
+
+    .page-gestion-usuarios .password-toggle {
+        top: 42px;
+    }
+}

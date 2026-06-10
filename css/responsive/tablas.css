@@ -1,0 +1,67 @@
+/**
+ * TABLAS — Panel y tablas con data-responsive-cards
+ * Móvil/tablet: max-width 768px (tablas en tarjetas + scroll si hace falta)
+ */
+
+.table-card,
+.app-shell .table-card,
+.app-shell .table-container,
+.app-shell .documentos-tabla-wrap,
+.page-content .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+}
+
+@media (max-width: 768px) {
+
+    .table-card table,
+    .app-shell .page-content > table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Modo tarjeta (requiere data-label en cada <td>) */
+    table[data-responsive-cards] thead,
+    .panel-table-responsive thead {
+        display: none;
+    }
+
+    table[data-responsive-cards] tbody tr,
+    .panel-table-responsive tbody tr {
+        display: block;
+        margin-bottom: 14px;
+        border: 1px solid var(--borde, #e2e8f0);
+        border-radius: 12px;
+        padding: 10px 12px;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    table[data-responsive-cards] tbody td,
+    .panel-table-responsive tbody td {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 8px 0;
+        border: none;
+        text-align: right;
+    }
+
+    table[data-responsive-cards] tbody td::before,
+    .panel-table-responsive tbody td::before {
+        content: attr(data-label);
+        font-weight: 700;
+        color: #64748b;
+        text-align: left;
+        flex-shrink: 0;
+    }
+
+    table[data-responsive-cards] tbody td:last-child,
+    .panel-table-responsive tbody td:last-child {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

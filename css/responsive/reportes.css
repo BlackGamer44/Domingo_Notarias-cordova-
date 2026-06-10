@@ -1,0 +1,133 @@
+/**
+ * REPORTES — reportes.php (mensual y anual)
+ * Móvil/tablet: max-width 768px
+ */
+
+@media (max-width: 768px) {
+
+    /* Contenedor principal de la página */
+    .page-reportes-unificado .rep-container {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    /* 1. SECCIÓN: Mensual, Anual (Navegación de pestañas) */
+    .page-reportes-unificado .rep-tipo-nav {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        order: 1; /* Primero en la parte superior */
+        width: 100%;
+    }
+
+    .page-reportes-unificado .rep-tipo-btn {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+    }
+
+    /* Contenedores de los paneles de reportes (tanto mensual como anual) */
+    .page-reportes-unificado #panel-reporte-mensual,
+    .page-reportes-unificado #panel-reporte-anual {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        order: 1; /* Se posiciona debajo de la navegación principal */
+    }
+
+    /* 2. SECCIÓN: El Filtro (Donde se ingresa el mes y año) */
+    .page-reportes-unificado .reportes-panel .rep-filtro {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        order: 2; /* Primero dentro de su respectivo panel */
+    }
+
+    .page-reportes-unificado .rep-filtro-field {
+        width: 100%;
+        min-width: 100%;
+    }
+
+    .page-reportes-unificado .rep-filtro .btn {
+        width: 100%;
+    }
+
+    /* 3. SECCIÓN: Reporte Mensual / Anual Titulo e Imprimir */
+    .page-reportes-unificado .reportes-panel .rep-header {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        order: 2; /* Segundo dentro de su respectivo panel */
+    }
+
+    .page-reportes-unificado .rep-header .btn-imprimir,
+    .page-reportes-unificado .rep-header-actions .btn {
+        width: 100%;
+    }
+
+    /* 4. SECCIÓN: Tarjetas y Tablas de datos */
+    .page-reportes-unificado .reportes-panel .bloque-tarjetas,
+    .page-reportes-unificado .reportes-panel .bloque-tabla,
+    .page-reportes-unificado .reportes-panel .rep-cards {
+        order: 3; /* Al final del panel */
+    }
+
+    .page-reportes-unificado .rep-cards,
+    .page-reporte .rep-cards {
+        grid-template-columns: 1fr !important;
+    }
+
+    .page-reportes-unificado .rep-funnel-row,
+    .page-reporte .rep-funnel-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .page-reportes-unificado .rep-header-actions,
+    .page-reporte-detenidas .rep-header-actions {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .page-reportes-unificado .rep-resumen-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Estructura adaptativa de la tabla detalle */
+    .page-reportes-unificado .rep-tabla-scroll table thead,
+    .page-reporte-detenidas .rep-tabla-scroll table thead {
+        display: none;
+    }
+
+    .page-reportes-unificado .rep-tabla-scroll table tbody tr,
+    .page-reporte-detenidas .rep-tabla-scroll table tbody tr {
+        display: block;
+        margin-bottom: 12px;
+        border: 1px solid var(--borde, #e2e8f0);
+        border-radius: 10px;
+        padding: 8px 10px;
+        background: #fff;
+    }
+
+    .page-reportes-unificado .rep-tabla-scroll table tbody td,
+    .page-reporte-detenidas .rep-tabla-scroll table tbody td {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 6px 0;
+        border: none;
+        text-align: right;
+    }
+
+    /* Uso del data-label inyectado por JS */
+    .page-reportes-unificado .rep-tabla-scroll table tbody td::before,
+    .page-reporte-detenidas .rep-tabla-scroll table tbody td::before {
+        content: attr(data-label);
+        font-weight: 700;
+        color: #64748b;
+        text-align: left;
+    }
+}

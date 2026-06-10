@@ -1,0 +1,24 @@
+/**
+ * BASE — Reglas globales para cualquier pantalla
+ * No depende de un módulo concreto.
+ */
+
+/* Evita que el texto se agrande solo en iOS y corta scroll horizontal */
+html {
+    -webkit-text-size-adjust: 100%;
+    overflow-x: hidden;
+}
+
+body.app-shell,
+body.has-sidebar.app-shell {
+    overflow-x: hidden;
+}
+
+/* Imágenes y gráficos no se salen del ancho de la pantalla */
+img,
+video,
+canvas,
+svg {
+    max-width: 100%;
+    height: auto;
+}

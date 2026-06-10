@@ -1,0 +1,34 @@
+/**
+ * FORMULARIOS — index.php (registro) y editar.php
+ * Breakpoint: 768px
+ */
+
+@media (max-width: 768px) {
+
+    /* Fila de filtros o campos del formulario en columna */
+    .app-shell .filter-row,
+    .app-shell .form-row,
+    .page-registro .form-row {
+        flex-direction: column;
+    }
+
+    /* Cada grupo (folio, notaría, fechas…) al 100% del ancho */
+    .app-shell .filter-group,
+    .app-shell .form-row > div,
+    .page-registro .form-group {
+        min-width: 100% !important;
+        width: 100%;
+    }
+
+    /* Botones Guardar, Filtrar, Cancelar apilados */
+    .app-shell .form-actions,
+    .app-shell .filter-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .app-shell .form-actions .btn,
+    .app-shell .filter-actions .btn {
+        width: 100%;
+    }
+}

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval';
+    style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; 
+    script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com;
+    font-src 'self' data: https://cdnjs.cloudflare.com https://fonts.gstatic.com;
+    connect-src 'self' https://*.trycloudflare.com;
+    ">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+    <title>Actividad del Sistema</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="css/dashboard-premium.css">
+    <link rel="stylesheet" href="css/app-shell.css">
+    <link rel="stylesheet" href="css/app-pages.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/modulos-app.css">
+    <link rel="stylesheet" href="css/responsive/actividades.css">
+    <link rel="stylesheet" href="css/demo-shell.css">
+</head>
+
+<body class="app-shell demo-cordova">
+
+    <p class="demo-banner">Sistema conectado con API PHP</p>
+
+    <div class="layout">
+        <main class="main-content">
+
+            <header class="topbar">
+                <div class="topbar-left">
+                    <h2>Actividad del sistema</h2>
+                </div>
+                <div class="topbar-right">
+                    <div class="user-box">
+                        <div class="avatar"><i class="fa-solid fa-user"></i></div>
+                        <div>
+                            <strong id="usuario-log">admin</strong>
+                            <small>Administrador</small>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="page-content">
+                <div class="container pagina-actividad">
+
+                    <div class="dashboard-header">
+                        <div>
+                            <p class="page-subtitle">Revisa operaciones por usuario, acción y fecha.</p>
+                        </div>
+                        <div class="page-header-actions">
+                            <a href="index.html" class="btn-hero-secondary">Volver</a>
+                            <a href="#" class="btn-hero">Ver documentos</a>
+                        </div>
+                    </div>
+
+                    <div class="filter-card">
+                        <h2 class="section-title">Filtros rápidos</h2>
+                        <form id="form-filtros">
+                            <div class="filter-row">
+                                <div>
+                                    <label for="usuario">Usuario</label>
+                                    <input type="text" id="usuario" placeholder="Buscar usuario">
+                                </div>
+                                <div>
+                                    <label for="accion">Acción</label>
+                                    <select id="accion">
+                                        <option value="" selected>Todas</option>
+                                        <option value="registrar">registrar</option>
+                                        <option value="editar">editar</option>
+                                        <option value="eliminar">eliminar</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="fecha">Fecha</label>
+                                    <input type="date" id="fecha">
+                                </div>
+                                <div class="filter-actions">
+                                    <button type="submit" id="btn-aplicar">Aplicar filtros</button>
+                                    <button type="button" class="btn-accion-admin btn-grey" id="btn-limpiar">Limpiar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="table-card">
+                        <div class="total-info">
+                            Total de registros encontrados: <strong id="total-registros">0</strong>
+                        </div>
+                        <h2>Actividad reciente</h2>
+                        <div class="table-container">
+                            <table class="tabla-actividad">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha y hora</th>
+                                        <th>Usuario</th>
+                                        <th>Acción</th>
+                                        <th>ID Documento</th>
+                                        <th>Detalle</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabla-actividad-body">
+                                    <tr>
+                                        <td colspan="5" style="text-align: center; color: gray;">Iniciando sistema...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <nav class="demo-bottom-nav">
+        <a href="index.html"><i class="fa-solid fa-house"></i>Inicio</a>
+        <a href="usuarios.html"><i class="fa-solid fa-users"></i>Usuarios</a>
+        <a href="actividades.html" class="is-active"><i class="fa-solid fa-list"></i>Actividad</a>
+        <a href="papelera.html"><i class="fa-solid fa-trash"></i>Papelera</a>
+        <a href="reportes.html"><i class="fa-solid fa-chart-bar"></i>Reportes</a>
+    </nav>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="cordova.js"></script>
+
+    <script>
+        const API_URL = TUNEL_URL + "/proyectos/api/log.php";
+
+        $(document).ready(function() {
+            // Manejo del ciclo de vida de la app (Cordova vs Navegador)
+            if (window.cordova) {
+                document.addEventListener("deviceready", onDeviceReady, false);
+            } else {
+                // Modo desarrollo / Navegador de PC
+                console.log("Iniciado desde entorno web estándar");
+                cargarActividades();
+            }
+
+            // Manejador del Evento Submit de Filtros
+            $("#form-filtros").on("submit", function(e) {
+                e.preventDefault();
+                let usuario = $("#usuario").val();
+                let accion = $("#accion").val();
+                let fecha = $("#fecha").val();
+                cargarActividades(usuario, accion, fecha);
+            });
+
+            // Manejador del Botón Limpiar
+            $("#btn-limpiar").on("click", function() {
+                $("#usuario").val("");
+                $("#accion").val("");
+                $("#fecha").val("");
+                cargarActividades();
+            });
+        });
+
+        function onDeviceReady() {
+            console.log("Cordova cargado de forma nativa exitosamente.");
+            
+            // Validar si el dispositivo móvil tiene internet activo
+            if(navigator.connection && navigator.connection.type === Connection.NONE) {
+                alert("Sin conexión a internet. Revisa tus datos o red Wi-Fi.");
+            }
+            
+            cargarActividades();
+        }
+
+        // ==========================================
+        // FUNCIÓN: CARGAR Y RENDERIZAR ACTIVIDADES
+        // ==========================================
+        function cargarActividades(usuario = "", accion = "", fecha = "") {
+            const $tbody = $("#tabla-actividad-body");
+            $tbody.html('<tr><td colspan="5" style="text-align: center; color: #888;"><i class="fa-solid fa-spinner fa-spin"></i> Cargando bitácora...</td></tr>');
+
+            $.ajax({
+                url: API_URL,
+                method: "GET",
+                dataType: "json",
+                data: {
+                    usuario: usuario,
+                    accion: accion,
+                    fecha: fecha
+                },
+                success: function(response) {
+                    $tbody.empty();
+
+                    if (response.success && response.data && response.data.length > 0) {
+                        $("#total-registros").text(response.data.length);
+                        let html = "";
+
+                        response.data.forEach(function(item) {
+                            // Sanitización básica para evitar ataques XSS reflejados en el log
+                            let usuarioSeguro = $('<div>').text(item.usuario_nombre).html();
+                            let detalleSeguro = $('<div>').text(item.detalle ?? '').html();
+                            let documentoId = item.documento_id ? item.documento_id : '—';
+
+                            html += `
+                            <tr>
+                                <td class="small-text nowrap">${item.fecha}</td>
+                                <td><strong>${usuarioSeguro}</strong></td>
+                                <td>
+                                    <span class="badge-accion badge-accion-${item.accion}">
+                                        ${item.accion}
+                                    </span>
+                                </td>
+                                <td><code>${documentoId}</code></td>
+                                <td class="small-text">${detalleSeguro}</td>
+                            </tr>`;
+                        });
+
+                        $tbody.html(html);
+                    } else {
+                        $("#total-registros").text("0");
+                        $tbody.html('<tr><td colspan="5" style="text-align: center; color: gray;">No se encontraron registros en la bitácora</td></tr>');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Detalle del error:", error);
+                    $("#total-registros").text("0");
+                    $tbody.html('<tr><td colspan="5" style="text-align: center; color: red; font-weight: bold;">⚠️ Error al conectar con el servidor central</td></tr>');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

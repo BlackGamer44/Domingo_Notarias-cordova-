@@ -1,0 +1,112 @@
+/**
+ * Shell mínimo para pruebas Cordova (sin menú lateral ni login).
+ */
+.demo-banner {
+    background: #fff8e6;
+    border-bottom: 1px solid #f0d78a;
+    color: #7a5b07;
+    padding: 8px 12px;
+    text-align: center;
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+body.app-shell.demo-cordova .layout > .sidebar {
+    display: none !important;
+}
+
+body.app-shell.demo-cordova .main-content {
+    margin-left: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-bottom: 72px;
+}
+
+body.app-shell.demo-cordova .topbar .menu-btn {
+    display: none;
+}
+
+.demo-bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1200;
+    display: flex;
+    background: #fff;
+    border-top: 1px solid #e2e8f0;
+    box-shadow: 0 -4px 16px rgba(15, 23, 42, 0.08);
+}
+
+.demo-bottom-nav a {
+    flex: 1;
+    padding: 10px 4px;
+    text-align: center;
+    text-decoration: none;
+    color: #64748b;
+    font-size: 0.7rem;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.demo-bottom-nav a i {
+    display: block;
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+}
+
+.demo-bottom-nav a.is-active {
+    color: #9e2c18;
+    background: #fef3f2;
+}
+
+.demo-hub {
+    max-width: 520px;
+    margin: 24px auto;
+    padding: 0 16px;
+}
+
+.demo-hub h1 {
+    color: #9e2c18;
+    margin: 0 0 8px;
+}
+
+.demo-hub-grid {
+    display: grid;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.demo-hub-grid a {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    background: #fff;
+    border-radius: 14px;
+    text-decoration: none;
+    color: #2e3a6e;
+    box-shadow: 0 4px 14px rgba(46, 58, 110, 0.08);
+    border: 1px solid #e2e8f0;
+}
+
+.demo-hub-grid a strong {
+    display: block;
+    font-size: 1rem;
+}
+
+.demo-hub-grid a span {
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+.demo-hub-grid a i {
+    font-size: 1.4rem;
+    color: #9e2c18;
+    width: 28px;
+    text-align: center;
+}
+
+.reportes-panel[hidden] {
+    display: none !important;
+}

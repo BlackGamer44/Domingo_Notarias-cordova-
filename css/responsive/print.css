@@ -1,0 +1,18 @@
+/**
+ * IMPRESIÓN — Al imprimir desde el navegador
+ */
+
+@media print {
+
+    /* No imprimir el botón ☰ del menú */
+    body.app-shell.has-sidebar .topbar .menu-btn {
+        display: none !important;
+    }
+
+    /* Detalle: solo dejar imprimir; ocultar volver, editar y eliminar */
+    .det-acciones .btn-det-back,
+    .det-acciones .btn-det-edit,
+    .det-acciones .btn-det-delete {
+        display: none !important;
+    }
+}

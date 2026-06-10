@@ -1,0 +1,83 @@
+/**
+ * PAPELERA — papelera.php (solo administrador)
+ * Móvil/tablet: max-width 768px
+ */
+
+@media (max-width: 768px) {
+
+    .pagina-papelera .encabezado-papelera {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .pagina-papelera .encabezado-papelera .btn {
+        width: 100%;
+        text-align: center;
+        box-sizing: border-box;
+    }
+
+    .pagina-papelera .formulario-busqueda-papelera .filter-row {
+        flex-direction: column;
+    }
+
+    .pagina-papelera .formulario-busqueda-papelera .filter-group,
+    .pagina-papelera .filter-row > div {
+        min-width: 100% !important;
+        width: 100%;
+    }
+
+    .pagina-papelera .filter-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .pagina-papelera .filter-actions .btn {
+        width: 100%;
+    }
+
+    /* Tabla en tarjetas */
+    .pagina-papelera table thead {
+        display: none;
+    }
+
+    .pagina-papelera table tbody tr {
+        display: block;
+        margin-bottom: 14px;
+        border: 1px solid var(--borde, #e2e8f0);
+        border-radius: 12px;
+        padding: 10px 12px;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .pagina-papelera table tbody td {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 8px 0;
+        border: none;
+        text-align: right;
+    }
+
+    .pagina-papelera table tbody td::before {
+        content: attr(data-label);
+        font-weight: 700;
+        color: #64748b;
+        text-align: left;
+        flex-shrink: 0;
+    }
+
+    .pagina-papelera table tbody td:last-child {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .pagina-papelera table .actions,
+    .pagina-papelera .acciones-papelera {
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+}

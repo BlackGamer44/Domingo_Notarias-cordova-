@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval';
+    style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; 
+    script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com;
+    font-src 'self' data: https://cdnjs.cloudflare.com https://fonts.gstatic.com;
+    connect-src 'self' https://*.trycloudflare.com;
+    ">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Papelera — Demo Cordova</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="css/dashboard-premium.css">
+    <link rel="stylesheet" href="css/app-shell.css">
+    <link rel="stylesheet" href="css/app-pages.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/modulos-app.css">
+    <link rel="stylesheet" href="css/responsive/papelera.css">
+    <link rel="stylesheet" href="css/demo-shell.css">
+</head>
+<body class="app-shell demo-cordova">
+
+<div class="layout">
+<main class="main-content">
+<header class="topbar">
+    <div class="topbar-left"><h2>Papelera</h2></div>
+    <div class="topbar-right">
+        <div class="user-box">
+            <div class="avatar"><i class="fa-solid fa-user" aria-hidden="true"></i></div>
+            <div><strong>admin.demo</strong><small>admin</small></div>
+        </div>
+    </div>
+</header>
+<div class="page-content">
+<div class="contenedor-papelera pagina-papelera">
+
+    <div class="encabezado-papelera">
+        <div>
+            <span class="eyebrow">Administración</span>
+            <h1>Papelera de documentos</h1>
+            <p class="page-subtitle">Visualiza, filtra, restaura o elimina de forma permanente los registros almacenados en la base de datos.</p>
+        </div>
+        <a href="index.html" class="btn btn-secondary">← Volver a Inicio</a>
+    </div>
+
+    <div class="filters-container filter-card">
+        <h2 class="section-title">Buscar en papelera</h2>
+        <form id="form-filtros-papelera" class="formulario-busqueda-papelera">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="busqueda-rapida-papelera">Búsqueda rápida</label>
+                    <input type="search" id="busqueda-rapida-papelera" name="busqueda_rapida" placeholder="Folio, crédito o usuario...">
+                </div>
+                <div class="filter-group">
+                    <label for="filtro-folio-papelera">Folio</label>
+                    <input type="text" id="filtro-folio-papelera" name="folio" placeholder="Ej. 6-2026-15">
+                </div>
+                <div class="filter-group">
+                    <label for="filtro-credito-papelera">No. crédito</label>
+                    <input type="text" id="filtro-credito-papelera" name="numero_credito" placeholder="Ej. INF-88421">
+                </div>
+            </div>
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="filtro-eliminado-por">Eliminado por</label>
+                    <input type="text" id="filtro-eliminado-por" name="eliminado_por" placeholder="Usuario que eliminó">
+                </div>
+                <div class="filter-group">
+                    <label for="filtro-fecha-desde">Eliminado desde</label>
+                    <input type="date" id="filtro-fecha-desde" name="eliminado_desde">
+                </div>
+                <div class="filter-group">
+                    <label for="filtro-fecha-hasta">Eliminado hasta</label>
+                    <input type="date" id="filtro-fecha-hasta" name="eliminado_hasta">
+                </div>
+            </div>
+            <div class="filter-actions">
+                <button type="submit" class="btn btn-primary" id="btn-filtrar">Filtrar</button>
+                <button type="button" class="btn btn-clear" id="btn-limpiar-filtros">Limpiar</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="table-footer resumen-papelera">
+        <span class="total-items" id="conteo-registros">Cargando registros...</span>
+    </div>
+
+    <div class="table-container documentos-tabla-wrap">
+        <table class="tabla-papelera">
+            <thead>
+                <tr>
+                    <th>Folio</th>
+                    <th>Crédito</th>
+                    <th>Fecha firma</th>
+                    <th>Eliminado por</th>
+                    <th>Eliminado el</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-papelera-body">
+                </tbody>
+        </table>
+    </div>
+</div>
+</div>
+</main>
+</div>
+
+<nav class="demo-bottom-nav" aria-label="Módulos">
+    <a href="index.html"><i class="fa-solid fa-house" aria-hidden="true"></i>Inicio</a>
+    <a href="usuarios.html"><i class="fa-solid fa-users" aria-hidden="true"></i>Usuarios</a>
+    <a href="actividades.html"><i class="fa-solid fa-list" aria-hidden="true"></i>Actividad</a>
+    <a href="papelera.html" class="is-active"><i class="fa-solid fa-trash" aria-hidden="true"></i>Papelera</a>
+    <a href="reportes.html"><i class="fa-solid fa-chart-bar" aria-hidden="true"></i>Reportes</a>
+</nav>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/config.js"></script>
+<script src="cordova.js"></script>
+
+<script>
+    // URL de la API de la papelera en tu pasarela Cloudflare
+    const API_PAPELERA = TUNEL_URL + "/proyectos/api/papeleria.php";
+
+    $(document).ready(function() {
+        
+        // Manejador del submit de filtros
+        $("#form-filtros-papelera").on("submit", function(e) {
+            e.preventDefault();
+            obtenerPapelera();
+        });
+
+        // Botón Limpiar Filtros
+        $("#btn-limpiar-filtros").on("click", function() {
+            $("#form-filtros-papelera")[0].reset();
+            obtenerPapelera();
+        });
+
+        // Delegación de eventos para el botón RESTAURAR
+        $(document).on("click", ".btn-restaurar-doc", function() {
+            const idRegistro = $(this).data("id");
+            if(confirm("¿Estás seguro de que deseas restaurar este documento al sistema activo?")) {
+                restaurarDocumento(idRegistro);
+            }
+        });
+
+        // Delegación de eventos para el botón ELIMINAR DEFINITIVO
+        $(document).on("click", ".btn-eliminar-definitivo", function() {
+            const idRegistro = $(this).data("id");
+            if(confirm("⚠️ ADVERTENCIA: Esta acción es irreversible. ¿Realmente deseas eliminar permanentemente este registro?")) {
+                eliminarDefinitivo(idRegistro);
+            }
+        });
+
+        // Inicialización adaptada (Cordova / Navegador local)
+        if (window.cordova) {
+            document.addEventListener('deviceready', onDeviceReady, false);
+        } else {
+            obtenerPapelera();
+        }
+    });
+
+    function onDeviceReady() {
+        document.addEventListener('offline', () => { alert('Sin conexión a internet'); }, false);
+        obtenerPapelera();
+    }
+
+    // FUNCIÓN: Listar y realizar peticiones filtradas (GET)
+    function obtenerPapelera() {
+        if (!navigator.onLine) {
+            alert('No hay conexión a internet');
+            return;
+        }
+
+        const $tbody = $("#tabla-papelera-body");
+        const $conteo = $("#conteo-registros");
+        $tbody.html('<tr><td colspan="6" style="text-align:center; padding:20px; color:gray;">Consultando papelera...</td></tr>');
+
+        // Serializar los inputs de la búsqueda
+        const datosBusqueda = $("#form-filtros-papelera").serialize();
+
+        $.ajax({
+            url: `${API_PAPELERA}?${datosBusqueda}`,
+            type: 'GET',
+            dataType: 'json',
+            success: function(res) {
+                $tbody.empty();
+                if (res.success) {
+                    const registros = res.registros || [];
+                    $conteo.text(`${registros.length} registros en papelera`);
+
+                    if (registros.length === 0) {
+                        $tbody.append('<tr><td colspan="6" style="text-align:center; padding:20px; color:gray;">La papelera está vacía o ningún registro coincide con los filtros.</td></tr>');
+                        return;
+                    }
+
+                    registros.forEach(function(item) {
+                        // Procesar el JSON que viene de la base de datos de forma segura
+                        let datosInternos = {};
+                        try {
+                            datosInternos = typeof item.datos === "string" ? JSON.parse(item.datos) : item.datos;
+                        } catch(e) {
+                            console.error("Error parseando JSON de fila:", item.id);
+                        }
+
+                        // Mapear los nombres de campos que vienen dentro de tu columna JSON de log (soporta 'numero_escritura' o 'folio')
+                        const folio = datosInternos.folio || datosInternos.numero_escritura || '—';
+                        const credito = datosInternos.numero_credito || '—';
+                        
+                        // Validar formatos de fecha
+                        let fechaFirma = '—';
+                        if (datosInternos.fecha_firma) {
+                            fechaFirma = new Date(datosInternos.fecha_firma + 'T00:00:00').toLocaleDateString('es-MX');
+                        }
+
+                        let fechaEliminado = '—';
+                        if (item.eliminado_en) {
+                            fechaEliminado = new Date(item.eliminado_en.replace(/-/g, "/")).toLocaleString('es-MX');
+                        }
+
+                        $tbody.append(`
+                            <tr>
+                                <td data-label="Folio"><code>${folio}</code></td>
+                                <td data-label="Crédito">${credito}</td>
+                                <td data-label="Fecha firma">${fechaFirma}</td>
+                                <td data-label="Eliminado por">${item.eliminado_por || 'desconocido'}</td>
+                                <td data-label="Eliminado el" class="small-text">${fechaEliminado}</td>
+                                <td data-label="Acciones">
+                                    <div class="actions-wrapper" style="display:flex; gap:5px;">
+                                        <button type="button" class="btn btn-secondary btn-sm btn-restaurar-doc" data-id="${item.id}">↺ Restaurar</button>
+                                        <button type="button" class="btn btn-danger btn-sm btn-eliminar-definitivo" data-id="${item.id}">Eliminar definitivo</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `);
+                    });
+                } else {
+                    alert('Error del servidor: ' + res.error);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error cargando papelera:", error);
+                $tbody.html('<tr><td colspan="6" style="text-align:center; color:red; padding:20px;">No se pudo conectar con el servidor central.</td></tr>');
+            }
+        });
+    }
+
+    // FUNCIÓN: Enviar instrucción de restauración (POST)
+    function restaurarDocumento(id) {
+        $.ajax({
+            url: API_PAPELERA,
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ id: id }),
+            dataType: 'json',
+            success: function(res) {
+                if(res.success) {
+                    alert("El documento ha sido devuelto a su módulo de origen.");
+                    obtenerPapelera();
+                } else {
+                    alert("Error: " + res.error);
+                }
+            },
+            error: function() {
+                alert("Error de comunicación al intentar restaurar.");
+            }
+        });
+    }
+
+    // FUNCIÓN: Borrado físico definitivo (DELETE)
+    function eliminarDefinitivo(id) {
+        $.ajax({
+            url: API_PAPELERA,
+            type: 'DELETE',
+            contentType: 'application/json',
+            data: JSON.stringify({ id: id }),
+            dataType: 'json',
+            success: function(res) {
+                if(res.success) {
+                    alert("Registro destruido con éxito de la base de datos.");
+                    obtenerPapelera();
+                } else {
+                    alert("Error: " + res.error);
+                }
+            },
+            error: function() {
+                alert("Error de comunicación al borrar definitivamente.");
+            }
+        });
+    }
+</script>
+</body>
+</html>

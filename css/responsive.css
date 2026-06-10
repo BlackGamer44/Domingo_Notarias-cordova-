@@ -1,0 +1,13 @@
+/**
+ * RESPONSIVE.CSS — Índice global (todas las páginas con menú)
+ * Los módulos por pantalla se cargan con $extra_css en cada vista PHP.
+ * Breakpoints: ver responsive/README-DEMOSTRACION.md
+ */
+
+@import url('responsive/base.css');
+@import url('responsive/layout-shell.css');
+@import url('responsive/tablas.css');
+@import url('responsive/formularios.css');
+@import url('responsive/login.css');
+@import url('responsive/sesion.css');
+@import url('responsive/print.css');
